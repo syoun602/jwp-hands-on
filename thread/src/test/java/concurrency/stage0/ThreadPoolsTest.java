@@ -31,9 +31,14 @@ class ThreadPoolsTest {
         executor.submit(logWithSleep("hello fixed thread pools"));
 
         // 올바른 값으로 바꿔서 테스트를 통과시키자.
-        final int expectedPoolSize = 0;
-        final int expectedQueueSize = 0;
+        final int expectedPoolSize = 2;
+        final int expectedQueueSize = 1;
 
+        /*
+          FixedThreadPool은 무조건 정해진 nThreads를 만들어놓는다.
+          만약 프로그램 중간에 스레드 하나가 꺼져도 다시 켜서 갯수를 유지한다.
+          스레드 당 하나의 요청을 잡고 있으므로 큐에는 1개의 작업만이 남게 된다.
+         */
         assertThat(expectedPoolSize).isEqualTo(executor.getPoolSize());
         assertThat(expectedQueueSize).isEqualTo(executor.getQueue().size());
     }
@@ -46,9 +51,16 @@ class ThreadPoolsTest {
         executor.submit(logWithSleep("hello cached thread pools"));
 
         // 올바른 값으로 바꿔서 테스트를 통과시키자.
-        final int expectedPoolSize = 0;
+        final int expectedPoolSize = 3;
         final int expectedQueueSize = 0;
 
+        /*
+        * CachedThreadPool은 스레드가 0개인 채로 풀을 생성한다.
+        * 새로운 요청이 들어올 때마다 현재 실행 가능한 스레드가 없다면 새로 생성한다.
+        * 만약 실행 가능한 스레드가 있다면 해당 스레드에 요청을 할당한다.
+        * 특정 시간동안 들어오는 요청이 없다면 스레드를 종료시켜서 리소스 사용을 중지한다.
+        * short-lived 비동기 처리가 많을 떄 프로그램 성능에 큰 도움이 된다.
+         **/
         assertThat(expectedPoolSize).isEqualTo(executor.getPoolSize());
         assertThat(expectedQueueSize).isEqualTo(executor.getQueue().size());
     }
