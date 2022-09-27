@@ -40,15 +40,19 @@ class DIContainer {
         final Class<?> aClass = bean.getClass();
         final Field[] declaredFields = aClass.getDeclaredFields();
         for (final Field field : declaredFields) {
-            try {
-                field.setAccessible(true);
-                final Object fieldBean = getBean(field.getType());
-                if (fieldBean != null) {
-                    field.set(bean, fieldBean);
-                }
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
+            setField(bean, field);
+        }
+    }
+
+    private void setField(final Object bean, final Field field) {
+        try {
+            field.setAccessible(true);
+            final Object fieldBean = getBean(field.getType());
+            if (fieldBean != null) {
+                field.set(bean, fieldBean);
             }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 

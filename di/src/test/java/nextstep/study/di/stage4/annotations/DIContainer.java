@@ -47,17 +47,18 @@ class DIContainer {
         final List<Field> fields = Arrays.stream(aClass.getDeclaredFields())
                 .filter(it -> it.isAnnotationPresent(Inject.class))
                 .collect(Collectors.toList());
+        fields.forEach(it -> setField(bean, it));
+    }
 
-        for (final Field field : fields) {
-            try {
-                field.setAccessible(true);
-                final Object fieldBean = getBean(field.getType());
-                if (fieldBean != null) {
-                    field.set(bean, fieldBean);
-                }
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
+    private void setField(final Object bean, final Field field) {
+        try {
+            field.setAccessible(true);
+            final Object fieldBean = getBean(field.getType());
+            if (fieldBean != null) {
+                field.set(bean, fieldBean);
             }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 
