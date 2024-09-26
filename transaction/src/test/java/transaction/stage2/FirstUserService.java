@@ -46,7 +46,7 @@ public class FirstUserService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public Set<String> saveFirstTransactionWithRequiredNew() {
+    public Set<String> saveFirstTransactionWithRequiresNew() {
         final var firstTransactionName = TransactionSynchronizationManager.getCurrentTransactionName();
         userRepository.save(User.createTest());
         logActualTransactionActive();
@@ -57,7 +57,7 @@ public class FirstUserService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public Set<String> saveAndExceptionWithRequiredNew() {
+    public Set<String> saveAndExceptionWithRequiresNew() {
         secondUserService.saveSecondTransactionWithRequiresNew();
 
         userRepository.save(User.createTest());
@@ -77,7 +77,7 @@ public class FirstUserService {
         return of(firstTransactionName, secondTransactionName);
     }
 
-//    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED)
     public Set<String> saveFirstTransactionWithMandatory() {
         final var firstTransactionName = TransactionSynchronizationManager.getCurrentTransactionName();
         userRepository.save(User.createTest());
@@ -99,7 +99,7 @@ public class FirstUserService {
         return of(firstTransactionName, secondTransactionName);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+//    @Transactional(propagation = Propagation.REQUIRED)
     public Set<String> saveFirstTransactionWithNested() {
         final var firstTransactionName = TransactionSynchronizationManager.getCurrentTransactionName();
         userRepository.save(User.createTest());
@@ -110,7 +110,7 @@ public class FirstUserService {
         return of(firstTransactionName, secondTransactionName);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+//    @Transactional(propagation = Propagation.REQUIRED)
     public Set<String> saveFirstTransactionWithNever() {
         final var firstTransactionName = TransactionSynchronizationManager.getCurrentTransactionName();
         userRepository.save(User.createTest());
